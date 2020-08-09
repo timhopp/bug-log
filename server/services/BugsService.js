@@ -18,6 +18,12 @@ class BugsService {
     }
     return data;
   }
+  async delete(id, userEmail){
+    let data = await dbContext.Bugs.findOneAndRemove({ _id: id, creatorEmail: userEmail });
+    if (!data) {
+      throw new BadRequest("Invalid ID or you do not own this task");
+    }
+  }
 }
 
 

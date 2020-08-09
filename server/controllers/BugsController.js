@@ -13,12 +13,13 @@ export class BugsController extends BaseController {
       .use(auth0Provider.getAuthorizedUserInfo)
       .post("", this.create)
       .put("/:id", this.edit)
-      .get("/:id/notes", this.getNotesByBug);
+      .get("/:id/notes", this.getNotesByBug)
+      .delete("/:id", this.delete);;
   }
 
   async getNotesByBug(req, res, next){
     try{
-      let data = await notesService.getNotesByBug(req.param.id, req.userInfo.email)
+      let data = await notesService.getNotesByBug(req.params.id, req.userInfo.email)
       return res.send(data)
     } catch(error) {
       next(error)
@@ -49,6 +50,15 @@ export class BugsController extends BaseController {
       let data = await bugsService.edit(req.params.id, req.userInfo.email, req.body)
       return res.send(data)
     } catch (error) { next(error) }
+  }
+
+  async delete(req, res, next) {
+    try {
+      req.body.creatorEmail = req.userInfo.email
+      await bugsService.delete(req.params.id, req.userInfo.email)
+      return res.send("Successfully deleted")
+    } catch (error) { next(error) 
+    }
   }
 }
 
