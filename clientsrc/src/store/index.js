@@ -11,6 +11,7 @@ export default new Vuex.Store({
   state: {
     profile: {},
     bugs: [],
+    currentBug: {},
     notes: [],
   },
   mutations: {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     setBugs(state, bugs) {
       state.bugs = bugs;
+    },
+    setCurrentBug(state, currentBug) {
+      state.currentBug = currentBug;
     }
   },
   actions: {
@@ -41,6 +45,21 @@ export default new Vuex.Store({
       .then(res => {
         this.commit('setBugs', res.data)
       })
+    },
+    async addBug({ commit, dispatch }, payload){
+      try {
+        debugger
+        let res = await api.post("bugs", payload)
+        dispatch("getAllBugs")
+       
+      } catch(error){
+        console.error(error)
+      }
+    },
+
+    setCurrentBug({ commit, dispatch, state }, bugId){
+      let currentPost = this.state.bugs.find(bug => bugId == bug.id);
+      commit("setCurrentBug", currentPost)
     }
   }
 });

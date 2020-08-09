@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <router-link class="navbar-brand" :to="{ name: 'Home' }"
-      >AppName</router-link
+      >Bug Tracker</router-link
     >
     <button
       class="navbar-toggler"
@@ -32,6 +32,9 @@
         </li>
       </ul>
       <span class="navbar-text">
+        <button type="button" class="btn btn-warning mr-5" data-toggle="modal" data-target="#bugModal">
+          Report
+          </button>
         <button
           class="btn btn-success"
           @click="login"
