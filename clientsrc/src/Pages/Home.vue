@@ -66,6 +66,7 @@ export default {
     return {
       newBug: {},
       openToClosed: true,
+  
     }
   },
   mounted(){

@@ -11,6 +11,7 @@
 
 
 <script>
+import swal from "sweetalert2"
 export default {
   name: 'Comment',
   props: ["comment"],
@@ -20,7 +21,34 @@ export default {
   computed:{},
   methods:{
     deleteComment(commentId){
-      this.$store.dispatch("deleteComment", commentId)
+      swal.fire({
+      title: 'Are you sure?',
+      text: "Once completed it cannot be undone",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, complete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.value) {
+         this.$store.dispatch("deleteComment", commentId)
+       
+        swal.fire(
+          'Completed!',
+          'Your comment is deleted. ',
+          'success'
+        )
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swal.fire(
+          'Cancelled',
+          'Your comment lives on!',
+          'error'
+        )
+      }
+    })
     },
     setCurrentComment(commentId){
       this.$store.dispatch("setCurrentComment", commentId)

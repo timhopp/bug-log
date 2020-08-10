@@ -11,7 +11,7 @@
    <h5>Open</h5>
    </div>
    <div class="col-3 bg-secondary text-white border">
-   <h5>{{bug.updatedAt}}</h5>
+   <h5>{{date}}</h5>
    </div>
   </div>
     <div v-show="bug.closed" class="Bug row bg-secondary text-warning strikethrough" @click="viewBug(bug.id)">
@@ -25,7 +25,7 @@
   <h5>Closed</h5>
    </div>
    <div class="col-3 border">
-  <h5> {{bug.updatedAt}} </h5>
+  <h5> {{date}} </h5>
    </div>
   </div>
   </div>
@@ -37,9 +37,17 @@ export default {
   name: 'Bug',
   props: ["bug"],
   data(){
-    return {}
+    return {
+       
+    }
   },
-  computed:{},
+  computed:{
+    date(){
+      let date =  this.bug.updatedAt
+      let newdate = date.slice(0,10)
+      return newdate
+    }
+  },
   methods:{
     viewBug(id){
       this.$router.push({name: 'Bug', params: { bugId: id } })

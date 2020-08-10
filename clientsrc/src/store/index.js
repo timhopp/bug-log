@@ -5,8 +5,6 @@ import { api } from "./AxiosService"
 
 Vue.use(Vuex);
 
-
-
 export default new Vuex.Store({
   state: {
     profile: {},
@@ -58,6 +56,7 @@ export default new Vuex.Store({
       try {
         let res = await api.post("bugs", payload)
         dispatch("getAllBugs")
+        router.push({name: 'Bug', params: { bugId: res.data._id } })
        
       } catch(error){
         console.error(error)
