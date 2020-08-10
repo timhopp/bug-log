@@ -2,12 +2,13 @@
   <div class="currentBug container bg-secondary mt-5">
     <div class="row">
    <h1 class="col-7 text-white">{{currentBug.title}} </h1>
-   <button type="button" class="m-2 col-2 btn btn-info" data-toggle="modal" data-target="#editBugModal">Edit</button>
-   <button class="m-2  col-2 btn btn-warning" @click="deleteBug(currentBug.id)">Delete</button>  
+   <button v-show="!currentBug.closed"  type="button" class="m-2 col-2 btn btn-info" data-toggle="modal" data-target="#editBugModal">Edit</button>
+   <button v-show="!currentBug.closed" class="m-2  col-2 btn btn-warning" @click="closeBug(currentBug.id)">Close</button> 
+   <div v-show="currentBug.closed" class="m-2 ml-5 col-2  btn btn-primary" >Bug Already Closed</div> 
    </div>
   <h5 class="text-white">{{currentBug.name}}</h5>
   <p class="text-white"> {{currentBug.description}}</p>
-  <h5 class="text-white"> Comments </h5>
+  <h5 class="text-white p-1"> Comments </h5>
     <comment
    v-for="commentItem in comments"
    :comment="commentItem"
@@ -15,7 +16,7 @@
    
     ></comment>
 
-  <button type="button" class="btn btn-warning mr-5" data-toggle="modal" data-target="#commentModal">
+  <button type="button" class="btn btn-warning mr-5 mb-2 mt-2" data-toggle="modal" data-target="#commentModal">
           Add Comment
           </button>
 
@@ -120,6 +121,7 @@ Comment
 
 <script>
 import Comment from "../components/Comment"
+import swal from "sweetalert2"
 export default {
   name: 'currentBug',
   props: ["comment", "commentItem"],
@@ -159,19 +161,54 @@ export default {
       })
       $("#editBugModal").modal("hide");
     },
-    deleteBug(bugId){
-      this.$store.dispatch('deleteBug', bugId)
-     this.$router.push({ name: "Home", path: "/" });
+    // deleteBug(bugId){
+    //   this.$store.dispatch('deleteBug', bugId)
+    //  this.$router.push({ name: "Home", path: "/" });
+    //  this.$store.dispatch('getAllBugs')
+    // },
+    closeBug(Id){
+    swal.fire({
+      title: 'Are you sure?',
+      text: "Once completed it cannot be undone",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, complete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.value) {
+          this.$store.dispatch('editBug', {
+        bugId: Id, 
+        closed: true, 
+      })
+       this.$router.push({ name: "Home", path: "/" });
+        swal.fire(
+          'Completed!',
+          'Your bug is completed. ',
+          'success'
+        )
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swal.fire(
+          'Cancelled',
+          'Your bug lives on!',
+          'error'
+        )
+      }
+    })
     },
+     
     commentToEdit(editComment){
-      debugger
       this.$store.dispatch('editComment', {
         content: this.editComment.content, 
         bugId: this.$route.params.bugId,
         //*How to access comment ID for this function? 
-        id: commentId
+        id: this.$store.state.currentComment.id
       })
-    }
+    },
+   
   },
   components:{
     Comment,

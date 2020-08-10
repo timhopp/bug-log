@@ -1,12 +1,12 @@
 <template>
   <div class="home mt-5">
-    <h1 class="text-center">Bug de Log!</h1>
+    <h1 class="text-center"></h1>
 <div class="container">
-  <div class="row">
- <h3 class="col-3 bg-white border">Title </h3>
- <h3 class="col-3 bg-white border">Reported By </h3>
- <h3 class="col-3 bg-white border">Status </h3>
- <h3 class="col-3 bg-white border">Last Modified</h3>
+  <div class="row rounded">
+ <h3 class="col-3 bg-secondary text-white border">Title </h3>
+ <h3 class="col-3 bg-secondary text-white border">Reported By </h3>
+ <h3 @click="openToClosed = !openToClosed" class="col-3 bg-secondary text-white border">Status </h3>
+ <h3 class="col-3 bg-secondary text-white border">Last Modified</h3>
   </div>
   
   
@@ -65,6 +65,7 @@ export default {
   data(){
     return {
       newBug: {},
+      openToClosed: true,
     }
   },
   mounted(){
@@ -72,7 +73,12 @@ export default {
   },
   computed: {
     bugs(){
-      return this.$store.state.bugs
+      let bugs = this.$store.state.bugs
+      if(this.openToClosed) {
+        return bugs.sort((a,b) => a.closed - b.closed)
+      } else {
+        return bugs.sort((a,b) => b.closed - a.closed)
+      }
     }
   },
   methods: {

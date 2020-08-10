@@ -12,6 +12,7 @@ export default new Vuex.Store({
     profile: {},
     bugs: [],
     currentBug: {},
+    currentComment: {},
     notes: [],
   },
   mutations: {
@@ -27,6 +28,9 @@ export default new Vuex.Store({
     setComments(state, notes){
       state.notes = notes
       console.log('current notes', state.notes)
+    },
+    setCurrentComment(state, currentComment){
+      state.currentComment = currentComment
     }
   },
   actions: {
@@ -52,7 +56,7 @@ export default new Vuex.Store({
     },
     async addBug({ commit, dispatch }, payload){
       try {
-        let res = await api.post("bugs" + payload.bugId, payload)
+        let res = await api.post("bugs", payload)
         dispatch("getAllBugs")
        
       } catch(error){
@@ -76,6 +80,11 @@ export default new Vuex.Store({
       dispatch("getCommentsByBug", bugId)
     },
 
+    setCurrentComment({commit, dispatch, state }, commentId){
+      let currentComment = this.state.notes.find(comment => commentId == comment.id)
+      commit("setCurrentComment", currentComment)
+    },
+
     async getCommentsByBug({ commit, dispatch, state}, bugId){
       try{
         this.state.notes = []
@@ -92,7 +101,23 @@ export default new Vuex.Store({
         console.error(error)
       }
     },
+    async deleteComment({ commit, dispatch, state}, commentId){
+      try{
+        await api.delete("notes/" + commentId)
+        dispatch("getCommentsByBug", this.state.currentBug.id)
+      } catch(error){
+        console.error(error)
+      }
+    },
     async editBug ({ commit, dispatch }, payload){
+      try{
+        let res = await api.put("bugs/" + payload.bugId, payload)
+        commit("setCurrentBug", res.data)
+      } catch(error){
+        console.error(error)
+      }
+    },
+    async closeBug ({ commit, dispatch }, payload){
       try{
         let res = await api.put("bugs/" + payload.bugId, payload)
         commit("setCurrentBug", res.data)

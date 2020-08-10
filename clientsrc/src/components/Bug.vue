@@ -1,17 +1,33 @@
 <template>
-  <div class="Bug row" @click="viewBug(bug.id)">
-    <div class="col-3 bg-white border">
-   {{bug.title}}
+<div >
+  <div v-show="!bug.closed" class="Bug row" @click="viewBug(bug.id)">
+    <div class="col-3 bg-secondary text-white border">
+   <h5>{{bug.title}}</h5>
    </div>
-   <div class="col-3 bg-white border">
-   {{bug.name}}
+   <div class="col-3 bg-secondary text-white border">
+   <h5>{{bug.name}}</h5>
    </div>
-   <div class="col-3 bg-white border">
-   {{bug.closed}}
+    <div v-show="!bug.closed" class="col-3 bg-secondary text-white border">
+   <h5>Open</h5>
    </div>
-   <div class="col-3 bg-white border">
-   {{bug.updatedAt}}
+   <div class="col-3 bg-secondary text-white border">
+   <h5>{{bug.updatedAt}}</h5>
    </div>
+  </div>
+    <div v-show="bug.closed" class="Bug row bg-secondary text-white strikethrough" @click="viewBug(bug.id)">
+    <div class="col-3  border">
+   <h5>{{bug.title}}</h5>
+   </div>
+   <div class="col-3 border">
+   <h5>{{bug.name}}</h5>
+   </div>
+    <div class="col-3 border">
+  <h5>Closed</h5>
+   </div>
+   <div class="col-3 border">
+  <h5> {{bug.updatedAt}} </h5>
+   </div>
+  </div>
   </div>
 </template>
 

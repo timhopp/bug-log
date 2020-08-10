@@ -27,4 +27,12 @@ export default {
 @import "./assets/_variables.scss";
 @import "bootstrap";
 @import "./assets/_overrides.scss";
+body{
+  background-image: url('https://wallpaperaccess.com/full/1706547.jpg');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: 'Caveat', cursive;
+}
 </style>
