@@ -1,7 +1,7 @@
 <template>
-  <div class="Comment bg-white border">
-    <div class="row">
-    <h5 class="col-7">{{comment.creatorEmail}}-{{comment.content}}</h5>
+  <div class="Comment bg-success rounded p-1 text-white">
+    <div class="row align-items-center">
+    <h5 class="col-7">{{comment.creatorEmail}}:&nbsp; {{comment.content}}</h5>
     <button type="button" class="m-2 col-2 btn btn-info" @click="setCurrentComment(comment.id)" data-toggle="modal" data-target="#editCommentModal">Edit</button>
    <button class="m-2  col-2 btn btn-warning" @click="deleteComment(comment.id)">Delete</button>  
     </div>

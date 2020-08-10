@@ -14,7 +14,7 @@
    <h5>{{bug.updatedAt}}</h5>
    </div>
   </div>
-    <div v-show="bug.closed" class="Bug row bg-secondary text-white strikethrough" @click="viewBug(bug.id)">
+    <div v-show="bug.closed" class="Bug row bg-secondary text-warning strikethrough" @click="viewBug(bug.id)">
     <div class="col-3  border">
    <h5>{{bug.title}}</h5>
    </div>
